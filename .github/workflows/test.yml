@@ -17,10 +17,31 @@ jobs:
       - name: Instalar Docker Compose
         run: sudo apt-get install docker-compose -y
 
-      # 👇 ESTE ES EL PASO QUE FALTABA
+
       - name: Compilar config-server
         run: |
           cd config-server
+          mvn clean package -DskipTests
+          cd ..
+
+      - name: Construir y levantar los servicios
+        run: docker-compose up -d --build
+
+      - name: Esperar a que los servicios estén listos
+        run: sleep 40
+
+      - name: Verificar contenedores
+        run: docker ps -a
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Compilar eureka-server
+        run: |
+          cd eureka-server
           mvn clean package -DskipTests
           cd ..
 
