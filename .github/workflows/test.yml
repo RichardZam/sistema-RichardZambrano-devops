@@ -2,8 +2,7 @@ name: CI Sistema Educativo
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
 
 jobs:
@@ -30,26 +29,20 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Primero construye todos los proyectos
-      - name: Build all services
-        run: |
-          mvn -f config-server/pom.xml clean package -DskipTests
-          mvn -f eureka-server/pom.xml clean package -DskipTests
-          mvn -f usuarios-servicio/pom.xml clean package -DskipTests
-          mvn -f asignaturas-servicio/pom.xml clean package -DskipTests
-          mvn -f matriculas-servicio/pom.xml clean package -DskipTests
+      # Construye todos los módulos juntos usando el POM padre
+      - name: Build all modules
+        run: mvn -B clean install -DskipTests
 
-      # Luego construye los contenedores
-      - name: Build and start containers
-        run: |
-          docker-compose up -d --build
+      # Construye imágenes Docker
+      - name: Build Docker images
+        run: docker-compose build
 
+      # Inicia los contenedores
+      - name: Start containers
+        run: docker-compose up -d
+
+      # Espera a que los servicios estén listos
       - name: Wait for services
         run: sleep 60
 
-      # Finalmente ejecuta los tests
-      - name: Run tests
-        run: |
-          mvn -f usuarios-servicio/pom.xml test
-          mvn -f asignaturas-servicio/pom.xml test
-          mvn -f matriculas-servicio/pom.xml test
+      # Ejecuta los tests

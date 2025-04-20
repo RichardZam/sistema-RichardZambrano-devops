@@ -7,6 +7,8 @@
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/matriculas-servicio/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/monitor-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usuarios-servicio/src/main/java" charset="UTF-8" />
   </component>
 </project>

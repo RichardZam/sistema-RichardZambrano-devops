@@ -106,12 +106,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.richardzambrano</groupId>
-			<artifactId>asignaturas-servicio</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
