@@ -16,7 +16,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // Rutas que no requieren autenticación
-                        .requestMatchers("/actuator").permitAll()
+                        .requestMatchers("/actuator/").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
 
                         .requestMatchers("/api/asignaturas").permitAll() // Listar asignaturas público
