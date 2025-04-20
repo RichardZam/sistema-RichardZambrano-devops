@@ -1,5 +1,5 @@
 package com.richardzambrano.matriculasservicio;
-
+;
 import com.richardzambrano.matriculasservicio.entity.Matricula;
 import com.richardzambrano.matriculasservicio.repository.MatriculaRepository;
 import com.richardzambrano.matriculasservicio.service.MatriculaService;
@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -25,13 +26,8 @@ class MatriculasServicioApplicationTests {
 	private MatriculaService matriculaService;
 
 	@Test
-	void contextLoads() {
-		// Test básico para que arranque el contexto Spring
-		assertNotNull(matriculaService);
-	}
-
-	@Test
 	void testBuscarPorEstudiante() {
+		// Datos de prueba
 		Long idEstudiante = 1L;
 
 		Matricula matricula1 = new Matricula();
@@ -46,15 +42,21 @@ class MatriculasServicioApplicationTests {
 		matricula2.setIdAsignatura(4L);
 		matricula2.setFechaRegistro(LocalDate.now());
 
+		// Configura el comportamiento del mock del repositorio
 		when(matriculaRepository.findByIdUsuario(idEstudiante)).thenReturn(List.of(matricula1, matricula2));
 
+		// Llama al método del servicio
 		List<Matricula> resultado = matriculaService.buscarPorEstudiante(idEstudiante);
 
+		// Verifica las condiciones esperadas
 		assertNotNull(resultado);
 		assertEquals(2, resultado.size());
 		assertEquals(idEstudiante, resultado.get(0).getIdUsuario());
 		assertEquals(idEstudiante, resultado.get(1).getIdUsuario());
 
+		// Verifica que el mock fue llamado
 		verify(matriculaRepository, times(1)).findByIdUsuario(idEstudiante);
 	}
+
 }
+
