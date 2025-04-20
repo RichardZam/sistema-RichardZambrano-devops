@@ -9,10 +9,10 @@ import com.richardzambrano.matriculasservicio.repository.MatriculaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.LocalDate;
@@ -21,9 +21,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = {
+                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration",
+                "spring.jpa.hibernate.ddl-auto=none",
+                "spring.sql.init.mode=never"
+        }
+)
 @AutoConfigureWebTestClient
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource(properties = {
+        "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false"
+})
 class MatriculasServicioIntegrationTests {
 
     @Autowired
@@ -40,7 +49,7 @@ class MatriculasServicioIntegrationTests {
 
     @Test
     void contextLoads() {
-        assertTrue(true); // Test dummy para levantar contexto
+        assertTrue(true);
     }
 
     @Test
