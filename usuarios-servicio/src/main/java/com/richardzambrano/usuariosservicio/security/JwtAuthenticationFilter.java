@@ -1,4 +1,4 @@
-package com.richardzambrano.usuariosservicio.service.security;
+package com.richardzambrano.usuariosservicio.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

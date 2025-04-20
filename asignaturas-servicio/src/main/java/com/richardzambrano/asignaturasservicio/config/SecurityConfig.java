@@ -12,11 +12,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Desactiva CSRF para pruebas (en producción hay que tener cuidado)
+                .csrf(AbstractHttpConfigurer::disable) // Desactiva CSRF para pruebas
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/asignaturas/**").permitAll() // 🟢 Permitimos todo en /api/asignaturas/
-                        .requestMatchers("/actuator/**").permitAll()
-                        .anyRequest().authenticated() // 🔒 El resto requiere auth
+                        .requestMatchers("/api/asignaturas").permitAll() // Listar asignaturas público
+                        .requestMatchers("/api/asignaturas/{id}").permitAll() // Obtener asignatura público
+                        .requestMatchers("/api/asignaturas").hasRole("ADMIN") // Crear solo para ADMIN
+                        .requestMatchers("/api/asignaturas/{id}").hasRole("ADMIN") // Editar / Eliminar solo ADMIN
+                        .anyRequest().authenticated() // Resto requiere autenticación
                 );
 
         return http.build();

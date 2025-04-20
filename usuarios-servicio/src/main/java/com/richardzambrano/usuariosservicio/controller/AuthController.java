@@ -1,9 +1,9 @@
-package com.richardzambrano.usuariosservicio.dto.controller;
+package com.richardzambrano.usuariosservicio.controller;
 
 import com.richardzambrano.usuariosservicio.dto.AuthRequest;
 import com.richardzambrano.usuariosservicio.dto.AuthResponse;
 import com.richardzambrano.usuariosservicio.model.Usuario;
-import com.richardzambrano.usuariosservicio.service.security.JwtService;
+import com.richardzambrano.usuariosservicio.security.JwtService;
 import com.richardzambrano.usuariosservicio.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

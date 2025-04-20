@@ -1,7 +1,7 @@
 package com.richardzambrano.usuariosservicio.config;
 
-import com.richardzambrano.usuariosservicio.service.security.CustomAccessDeniedHandler;
-import com.richardzambrano.usuariosservicio.service.security.JwtAuthenticationFilter;
+import com.richardzambrano.usuariosservicio.security.CustomAccessDeniedHandler;
+import com.richardzambrano.usuariosservicio.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,18 +37,29 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Rutas que no requieren autenticación
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+
+                        // Rutas accesibles solo por ADMIN
+                        .requestMatchers("/api/usuarios/admin/**").hasRole("ADMIN")
+
+                        // Rutas accesibles por ADMIN y DOCENTE
+                        .requestMatchers("/api/usuarios/docente/**").hasAnyRole("ADMIN", "DOCENTE")
+
+                        // Rutas accesibles por todos los roles autenticados
+                        .requestMatchers("/api/usuarios/**").authenticated()
+
+                        // Requiere autenticación para todo lo demás
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                 .exceptionHandling(ex -> ex
-                .accessDeniedHandler(customAccessDeniedHandler) // <- Aquí
-        );
+                .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler)); // Manejo personalizado de errores
         return http.build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {

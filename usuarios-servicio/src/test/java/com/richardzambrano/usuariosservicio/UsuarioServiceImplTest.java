@@ -56,4 +56,46 @@ class UsuarioServiceImplTest {
 
         assertEquals("Usuario no encontrado con id: 999", exception.getMessage());
     }
+    @Test
+    void testActualizarUsuario() {
+        // Arrange
+        Usuario usuarioExistente = new Usuario();
+        usuarioExistente.setId(1L);
+        usuarioExistente.setNombre("Nombre Actual");
+        usuarioExistente.setEmail("actual@email.com");
+        usuarioExistente.setRol(Usuario.Rol.ESTUDIANTE);
+
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioExistente));
+
+        Usuario usuarioActualizado = new Usuario();
+        usuarioActualizado.setNombre("Nombre Nuevo");
+        usuarioActualizado.setEmail("nuevo@email.com");
+        usuarioActualizado.setPassword("nuevoPassword");
+        usuarioActualizado.setRol(Usuario.Rol.DOCENTE);
+
+        when(usuarioRepository.save(any())).thenReturn(usuarioActualizado);
+
+        // Act
+        Usuario resultado = usuarioService.actualizarUsuario(1L, usuarioActualizado);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Nombre Nuevo", resultado.getNombre());
+        assertEquals("nuevo@email.com", resultado.getEmail());
+        verify(usuarioRepository, times(1)).save(any());
+    }
+    @Test
+    void testEliminarUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setId(1L);
+
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+
+        // Act
+        usuarioService.eliminarUsuario(1L);
+
+        // Assert
+        verify(usuarioRepository, times(1)).delete(usuario);
+    }
+
 }

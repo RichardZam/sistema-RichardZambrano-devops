@@ -1,4 +1,4 @@
-package com.richardzambrano.usuariosservicio.service.security;
+package com.richardzambrano.usuariosservicio.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

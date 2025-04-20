@@ -19,8 +19,16 @@ public class AsignaturaService {
     public List<Asignatura> listarTodas() {
         return asignaturaRepository.findAll();
     }
+
     public Optional<Asignatura> obtenerPorId(Long id) {
         return asignaturaRepository.findById(id);
     }
 
+    public Asignatura actualizarAsignatura(Asignatura asignatura) {
+        return asignaturaRepository.save(asignatura);
+    }
+
+    public void eliminarAsignatura(Long id) {
+        asignaturaRepository.deleteById(id);
+    }
 }

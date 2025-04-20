@@ -11,4 +11,10 @@ public interface UsuarioService {
     Usuario obtenerPorEmail(String email);
     // Método opcional para resetear y crear un usuario de prueba
     Usuario resetAndCrearUsuarioTest();
+
+    // Métodos nuevos
+    Usuario actualizarUsuario(Long id, Usuario usuario);
+    void eliminarUsuario(Long id);
+    Usuario obtenerUsuarioAutenticado(); // Devuelve los datos del usuario autenticado
+
 }

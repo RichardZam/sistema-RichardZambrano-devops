@@ -7,23 +7,8 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-config-server:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_DB: usuarios-servicio
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - name: Clonar repositorio
@@ -35,12 +20,25 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Cache de dependencias Maven
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
+      - name: Construir Config Server
+        run: |
+          cd config-server
+          mvn clean install -DskipTests=false
 
-      - name: Construir con Maven
-        run: mvn clean install -DskipTests=false
+  build-usuarios-servicio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Construir Usuarios Servicio
+        run: |
+          cd usuarios-servicio
+          mvn clean install -DskipTests=false
