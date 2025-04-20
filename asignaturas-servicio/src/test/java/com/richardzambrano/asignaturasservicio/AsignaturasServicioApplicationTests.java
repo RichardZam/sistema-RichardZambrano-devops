@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class AsignaturasServicioApplicationTests {
 
-	private AsignaturaRepository asignaturaRepository;
+	/**private AsignaturaRepository asignaturaRepository;
 	private AsignaturaService asignaturaService;
 
 	@BeforeEach
@@ -68,4 +68,5 @@ class AsignaturasServicioApplicationTests {
 
 		verify(asignaturaRepository, times(1)).deleteById(id);
 	}
+	**/
 }

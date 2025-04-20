@@ -25,31 +25,29 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
 
-      # Construye todos los módulos (sin tests)
-      - name: Build all modules
+      # Paso clave: Construye los JARs primero
+      - name: Build all modules with Maven
         run: |
-          mvn -B clean install -DskipTests
+          cd config-server && mvn clean package -DskipTests && cd ..
+          cd eureka-server && mvn clean package -DskipTests && cd ..
+          cd usuarios-servicio && mvn clean package -DskipTests && cd ..
+          cd asignaturas-servicio && mvn clean package -DskipTests && cd ..
+          cd matriculas-servicio && mvn clean package -DskipTests && cd ..
+          cd monitor-admin && mvn clean package -DskipTests && cd ..
 
-      # Construye imágenes Docker
+      # Ahora construye las imágenes Docker
       - name: Build Docker images
         run: docker-compose build
 
-      # Paso específico para AsignaturaServiceTest
-      - name: Run Unit Tests (AsignaturaService)
-        run: |
-          cd asignaturas-servicio
-          mvn test -Dtest=AsignaturaServiceTest
+      - name: Start containers
+        run: docker-compose up -d
 
-      # Paso opcional para otros tests de integración
-      - name: Run Integration Tests
-        if: always()
-        run: |
-          docker-compose up -d
-          sleep 30
-          mvn test -Dgroups=integration
-          docker-compose down -v
+      - name: Wait for services
+        run: sleep 60
 
-      # Limpieza final
-      - name: Clean up
+      - name: Run tests
+        run: mvn test
+
+      - name: Tear down Docker containers
         if: always()
         run: docker-compose down -v
