@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,15 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(properties = {
-		"spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration," +
-				"org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration",
-		"spring.jpa.hibernate.ddl-auto=none",
-		"spring.sql.init.mode=never"
-})
-@TestPropertySource(properties = {
-		"spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false"
-})
+@SpringBootTest
 class MatriculasServicioApplicationTests {
 
 	@MockBean
@@ -35,6 +26,7 @@ class MatriculasServicioApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Test básico para que arranque el contexto Spring
 		assertNotNull(matriculaService);
 	}
 
@@ -54,8 +46,7 @@ class MatriculasServicioApplicationTests {
 		matricula2.setIdAsignatura(4L);
 		matricula2.setFechaRegistro(LocalDate.now());
 
-		when(matriculaRepository.findByIdUsuario(idEstudiante))
-				.thenReturn(List.of(matricula1, matricula2));
+		when(matriculaRepository.findByIdUsuario(idEstudiante)).thenReturn(List.of(matricula1, matricula2));
 
 		List<Matricula> resultado = matriculaService.buscarPorEstudiante(idEstudiante);
 
