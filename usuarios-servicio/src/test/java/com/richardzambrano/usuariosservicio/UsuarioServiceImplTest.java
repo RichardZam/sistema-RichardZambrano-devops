@@ -37,7 +37,7 @@ class UsuarioServiceImplTest {
         // Act
         Usuario resultado = usuarioService.obtenerPorId(1L);
 
-        // Assert
+        // Assert echo por Richard Zambrano
         assertNotNull(resultado);
         assertEquals("test", resultado.getNombre());
         assertEquals("test@email.com", resultado.getEmail());
