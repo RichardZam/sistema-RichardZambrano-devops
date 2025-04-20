@@ -1,21 +1,14 @@
-jobs:
-  build-usuarios-servicio:
-    runs-on: ubuntu-latest
+name: CI para Sistema Educativo
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: usuarios-servicio
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-config-server:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Clonar repositorio
@@ -27,8 +20,23 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Esperar a que PostgreSQL esté listo
-        run: sleep 15
+      - name: Construir Config Server
+        run: |
+          cd config-server
+          mvn clean install -DskipTests=false
+
+  build-usuarios-servicio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Construir Usuarios Servicio
         run: |
