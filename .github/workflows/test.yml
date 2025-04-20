@@ -1,4 +1,4 @@
-name: CI para Sistema Educativo
+name: CI Sistema Educativo
 
 on:
   push:
@@ -7,38 +7,42 @@ on:
   pull_request:
 
 jobs:
-  build-config-server:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v3
 
-      - name: Instalar JDK
+      - name: Instalar Docker Compose
+        run: sudo apt-get install docker-compose -y
+
+      - name: Construir y levantar los servicios
+        run: docker-compose up -d --build
+
+      - name: Esperar a que los servicios estén listos
+        run: sleep 40
+
+      - name: Verificar contenedores
+        run: docker ps -a
+
+      - name: Instalar Java 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Construir Config Server
-        run: |
-          cd config-server
-          mvn clean install -DskipTests=false
-
-  build-usuarios-servicio:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
-
-      - name: Instalar JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Construir Usuarios Servicio
+      - name: Ejecutar pruebas de usuarios-servicio
         run: |
           cd usuarios-servicio
-          mvn clean install -DskipTests=false
+          mvn clean test
+
+      - name: Ejecutar pruebas de asignaturas-servicio
+        run: |
+          cd asignaturas-servicio
+          mvn clean test
+
+      - name: Ejecutar pruebas de matriculas-servicio
+        run: |
+          cd matriculas-servicio
+          mvn clean test

@@ -116,7 +116,7 @@ docker-compose up --build
 - Matrículas: 8083
 
 ## 🧾 Datos Personales
-- Nombre: Richard Zambrano Diaz Y Stiven David Zapatas Crastro
+- Nombre: Richard Zambrano Diaz Y Stiven David Zapatas Castro
 - Carrera: Ingeniería de Sistemas
 - Parcial: 2 – Microservicios
 - Repositorio: GitHub - sistema-educativo-microservicios-RichardZambrano
