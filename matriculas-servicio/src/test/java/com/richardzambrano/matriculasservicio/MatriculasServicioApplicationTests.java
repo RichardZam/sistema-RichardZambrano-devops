@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class MatriculasServicioApplicationTests {
-/**
+
 	@MockBean
 	private MatriculaRepository matriculaRepository;
 
@@ -57,6 +57,6 @@ class MatriculasServicioApplicationTests {
 		// Verifica que el mock fue llamado
 		verify(matriculaRepository, times(1)).findByIdUsuario(idEstudiante);
 	}
- **/
+
 }
 
