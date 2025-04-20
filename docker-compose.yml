@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  postgres-usuarios:
+    image: postgres:15
+    container_name: postgres_usuarios
+    environment:
+      POSTGRES_DB: usuarios-servicio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - usuarios_data:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  postgres-asignaturas:
+    image: postgres:15
+    container_name: postgres_asignaturas
+    environment:
+      POSTGRES_DB: asignaturas-servicio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5434:5432"
+    volumes:
+      - asignaturas_data:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  postgres-matriculas:
+    image: postgres:15
+    container_name: postgres_matriculas
+    environment:
+      POSTGRES_DB: matriculas-servicio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5435:5432"
+    volumes:
+      - matriculas_data:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  config-server:
+    build:
+      context: ./config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/RichardZam/configuracion-microservicios
+    networks:
+      - microservices
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+    networks:
+      - microservices
+
+  usuarios-servicio:
+    build:
+      context: ./usuarios-servicio
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-usuarios
+      - config-server
+      - eureka-server
+    networks:
+      - microservices
+
+  asignaturas-servicio:
+    build:
+      context: ./asignaturas-servicio
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-asignaturas
+      - config-server
+      - eureka-server
+    networks:
+      - microservices
+
+  matriculas-servicio:
+    build:
+      context: ./matriculas-servicio
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres-matriculas
+      - usuarios-servicio
+      - asignaturas-servicio
+      - config-server
+      - eureka-server
+    networks:
+      - microservices
+
+  monitor-admin:
+    build:
+      context: ./monitor-admin
+    ports:
+      - "8088:8088"
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - microservices
+volumes:
+  usuarios_data:
+  asignaturas_data:
+  matriculas_data:
+
+networks:
+  microservices:
+    driver: bridge
