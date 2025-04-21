@@ -1,7 +1,5 @@
 package com.richardzambrano.matriculasservicio;
-
 ;
-
 import com.richardzambrano.matriculasservicio.entity.Matricula;
 import com.richardzambrano.matriculasservicio.repository.MatriculaRepository;
 import com.richardzambrano.matriculasservicio.service.MatriculaService;
@@ -10,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = MatriculaService.class) // Carga solo el servicio y sus dependencias inmediatas
+@SpringBootTest
 class MatriculasServicioApplicationTests {
 
 	@MockBean
@@ -61,3 +59,4 @@ class MatriculasServicioApplicationTests {
 	}
 
 }
+
