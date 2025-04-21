@@ -34,7 +34,7 @@ class MatriculasServicioIntegrationTests {
     private AsignaturaClient asignaturaClient;
 
     @MockBean
-    private MatriculaRepository matriculaRepository;
+    private MatriculaRepository matriculaRepository; // Mockeado
 
     @Test
     void contextLoads() {
