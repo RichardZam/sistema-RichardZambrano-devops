@@ -1,18 +1,24 @@
-# 🎓 Sistema Educativo - Microservicios
+# 🎓 Sistema Educativo - Microservicios DEVOPS
 
 ## 📌 Descripción General
-Este proyecto es parte del **Parcial 2 - Microservicios** del curso de Ingeniería de Sistemas. Se implementa un **sistema educativo distribuido** utilizando **Spring Boot** y **Spring Cloud**, donde se gestiona la información de usuarios (estudiantes y docentes), asignaturas y matrículas, aplicando conceptos modernos de arquitectura basada en microservicios.
-
-## 🔍 Enfoque Distribuido
-El sistema está compuesto por múltiples microservicios independientes, cada uno con su propia base de datos, configuraciones, y responsabilidades bien definidas. La arquitectura incluye:
-- **Descubrimiento de servicios** con **Eureka**
-- **Configuración centralizada** con **Spring Cloud Config**
-- **Seguridad** mediante JWT
-- **Comunicación interna** con Feign Client
-- **Monitorización** con Spring Boot Admin y Actuator
-- **Contenerización y orquestación** con Docker y Docker Compose
+Este proyecto forma parte del **Parcial 3A - Microservicios-DEVOPS** del curso de Ingeniería de Sistemas. Consiste en un **sistema educativo distribuido** desarrollado con **Spring Boot** y **Spring Cloud**, enfocado en la gestión de usuarios (estudiantes y docentes), asignaturas y matrículas, siguiendo principios modernos de arquitectura basada en microservicios.
 
 ---
+
+## 🔍 Enfoque Distribuido y Tecnologías
+La arquitectura del sistema se construye sobre los siguientes pilares:
+
+- ✅ **Eureka** para descubrimiento de servicios
+- ⚙️ **Spring Cloud Config** para configuración centralizada
+- 🔐 **JWT y Spring Security** para autenticación y autorización
+- 📡 **Feign Client** para comunicación entre microservicios
+- 📈 **Spring Boot Admin + Actuator** para monitoreo
+- 🐳 **Docker** y **Docker Compose** para contenerización
+- 🔭 **Grafana + Prometheus** para métricas avanzadas
+- 🔁 **CI/CD automatizado** con GitHub Actions
+
+---
+
 
 ## 🏗️ Estructura del Proyecto
 
@@ -23,10 +29,14 @@ sistema-educativo-microservicios-RichardZambrano/
 ├── asignaturas-servicio/     # CRUD de materias
 ├── matriculas-servicio/      # Registro de estudiantes en materias
 │
-├── config-server/            # Configuración centralizada (Spring Cloud Config)
-├── eureka-server/            # Descubrimiento de servicios (Eureka)
-├── monitor-admin/            # Consola de monitoreo (Spring Boot Admin)
+├── config-server/            # Configuración centralizada
+├── eureka-server/            # Descubrimiento de servicios
+├── monitor-admin/            # Monitorización con Spring Boot Admin
 │
+├── prometheus/               # Configuración de Prometheus
+├── grafana/                  # Configuración de Grafana
+│
+├── .github/workflows/        # Pipeline CI/CD con GitHub Actions
 ├── docker-compose.yml        # Orquestación completa con Docker
 └── README.md                 # Documentación del proyecto
 ```
@@ -70,18 +80,24 @@ sistema-educativo-microservicios-RichardZambrano/
 - Seguridad manejada con filtros y configuraciones de Spring Security
 
 ## 📊 Monitoreo y Salud del Sistema
+### Spring Boot Admin
 - Se usa Spring Boot Actuator para exponer endpoints como ``/actuator/health``
 
 - Consola web de monitoreo con Spring Boot Admin ``(monitor-admin)``
 
 - Se monitorean servicios registrados automáticamente vía Eureka
+### Prometheus + Grafana
+ - Recolección de métricas con ``Prometheus``
 
-## 🧪 Pruebas
-- Se implementan pruebas unitarias y de integración con Spring Boot Test
+- Dashboards personalizados en ``Grafana`` para métricas del sistema
+## 🧪 Pruebas    
+### 🔬 Pruebas Unitarias:
 
-- Cobertura básica garantizada por microservicio
+- Cada microservicio cuenta con al menos 2 pruebas unitarias utilizando Mockito para simular dependencias y validar el comportamiento de los componentes de forma aislada.
 
-- Tests adicionales pueden realizarse desde Postman (colección opcional)
+### 🔗 Pruebas de Integración:
+
+- Se desarrolló al menos 1 prueba de integración por microservicio utilizando WebTestClient, para verificar el funcionamiento completo de los endpoints y su integración con la lógica interna.
 
 ## 🐳 Despliegue con Docker
 - Cada microservicio contiene su propio Dockerfile, y el entorno completo se despliega con docker-compose.yml.
@@ -96,27 +112,23 @@ sistema-educativo-microservicios-RichardZambrano/
 ## ▶️ Pasos para ejecutar:
 ```bash
 
-git clone https://github.com/RichardZam/sistema-educativo-microservicios-RichardZambrano.git
-cd sistema-educativo-microservicios-RichardZambrano
+git clone https://github.com/RichardZam/sistema-RichardZambrano-devops.git
+cd sistema-RichardZambrano-devops
 docker-compose up --build
 ```
 ### 🌐 Accesos:
-- Eureka: http://localhost:8761
-
-- Config Server: http://localhost:8888
-
-- Monitor Admin: http://localhost:8090
-
-- Servicios (puertos expuestos):
-
-- Usuarios: 8081
-
-- Asignaturas: 8082
-
-- Matrículas: 8083
+- Componente | URL
+- Eureka | http://localhost:8761
+- Config Server | http://localhost:8888
+- Monitor Admin | http://localhost:8088
+- Grafana | http://localhost:3000
+- Prometheus | http://localhost:9090
+- Usuarios API | http://localhost:8081
+- Asignaturas API | http://localhost:8082
+- Matrículas API | http://localhost:8083
 
 ## 🧾 Datos Personales
 - Nombre: Richard Zambrano Diaz Y Stiven David Zapatas Castro
 - Carrera: Ingeniería de Sistemas
 - Parcial: 2 – Microservicios
-- Repositorio: GitHub - sistema-educativo-microservicios-RichardZambrano
+- Repositorio: GitHub - https://github.com/RichardZam/sistema-RichardZambrano-devops
