@@ -9,9 +9,9 @@ import com.richardzambrano.matriculasservicio.repository.MatriculaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest; // Usa WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.LocalDate;
@@ -20,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
+@WebFluxTest // No necesitamos especificar el controlador si estamos probando la integración web general
 class MatriculasServicioIntegrationTests {
 
     @Autowired
@@ -68,6 +67,7 @@ class MatriculasServicioIntegrationTests {
         nuevaMatricula.setIdAsignatura(asignaturaId);
         nuevaMatricula.setFechaRegistro(LocalDate.now());
 
+        // Define el comportamiento del repositorio al guardar
         when(matriculaRepository.save(any(Matricula.class))).thenReturn(nuevaMatricula);
 
         MatriculaDTO matriculaDTO = new MatriculaDTO();
@@ -86,6 +86,6 @@ class MatriculasServicioIntegrationTests {
 
         verify(usuarioClient, times(1)).getUsuarioById(usuarioId);
         verify(asignaturaClient, times(1)).getAsignaturaById(asignaturaId);
-        verify(matriculaRepository, times(1)).save(any(Matricula.class));
+        verify(matriculaRepository, times(1)).save(any(Matricula.class)); // Verificamos que se llame al repositorio
     }
 }

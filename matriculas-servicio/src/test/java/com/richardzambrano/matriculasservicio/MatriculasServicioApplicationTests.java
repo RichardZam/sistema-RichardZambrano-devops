@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,11 +18,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = MatriculaService.class) // Carga solo el servicio y sus dependencias inmediatas
 class MatriculasServicioApplicationTests {
 
 	@MockBean
-	private MatriculaRepository matriculaRepository; // Mockeado
+	private MatriculaRepository matriculaRepository;
 
 	@Autowired
 	private MatriculaService matriculaService;
